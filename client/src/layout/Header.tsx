@@ -1,34 +1,25 @@
-import { Link } from 'react-router-dom';
 import {
+  Box,
+  Container,
+  Flex,
+  Icon,
+  IconButton,
+  Image,
   Stack,
   Text,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
-  Box,
-  useDisclosure,
-  Flex,
-  Container,
-  IconButton,
-  InputGroup,
-  InputLeftElement,
-  Image,
-  Input,
   useColorMode,
 } from '@chakra-ui/react';
-import { EthGasMenu } from './components';
-import { RiGasStationFill } from 'react-icons/ri';
-import { MdOutlineNightlightRound } from 'react-icons/md';
-import { BsFillSunFill } from 'react-icons/bs';
-import { AiFillStar, AiFillPieChart, AiOutlineSearch } from 'react-icons/ai';
-import Separator from 'common/separators';
-import PrimaryButton from 'common/buttons/PrimaryButton';
-import { SecondaryButton } from 'common/buttons';
-import SearchCoins from './components/search-coins';
 import logo from 'assets/images/chainlink.png';
+import { SecondaryButton } from 'common/buttons';
+import PrimaryButton from 'common/buttons/PrimaryButton';
+import Separator from 'common/separators';
+import { AiFillPieChart, AiFillStar } from 'react-icons/ai';
+import { BsFillSunFill } from 'react-icons/bs';
+import { MdOutlineNightlightRound } from 'react-icons/md';
+import { RiGasStationFill } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
+import { EthGasMenu } from './components';
+import SearchCoins from './components/search-coins';
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
