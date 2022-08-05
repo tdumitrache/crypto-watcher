@@ -27,7 +27,6 @@ const Footer = () => {
         <Flex direction='column'>
           <Flex direction='row' justify={'space-beetween'} align='center'>
             <Box
-              cursor='pointer'
               display='flex'
               alignItems='center'
               alignSelf='flex-start'
