@@ -10,7 +10,7 @@ const GlobalMarketData = () => {
     getGlobalMarketData()
   );
   return (
-    <Flex direction='column'>
+    <Flex direction='column' mb='24px'>
       <Text fontSize='24px' color='gray.700' fontWeight='bold' mb='6px'>
         Today's Cryptocurrency Prices by Market Cap
       </Text>
@@ -39,27 +39,24 @@ const GlobalMarketData = () => {
           as='span'
           cursor={'pointer'}
           textDecoration='underline'
-          color='gray.600'
+          color='blue.600'
+          fontWeight='600'
           onClick={() => setShowMoreMarketData(!showMoreMarketData)}
         >
           {showMoreMarketData ? 'Read Less' : 'Read More'}
         </Text>
-        <Text display={showMoreMarketData ? 'block' : 'none'} mt="12px">
+        <Text display={showMoreMarketData ? 'block' : 'none'} mt='12px'>
           The total crypto market volume over the last 24 hours is{' '}
           <Text as='span' fontWeight={'bold'}>
-            {`$${globalMarketData?.total_volume?.usd.toLocaleString(
-              'en-us'
-            )}`}
-            .{' '}
+            {`$${globalMarketData?.total_volume?.usd.toLocaleString('en-us')}`}.{' '}
           </Text>
           The number of all cryptocurrencies are{' '}
           <Text as='span' fontWeight={'bold'} color='gray.600'>
-            {globalMarketData?.active_cryptocurrencies}.{" "}<br />
+            {globalMarketData?.active_cryptocurrencies}. <br />
           </Text>
-
           The number of all markets are{' '}
           <Text as='span' fontWeight={'bold'} color='gray.600'>
-            {globalMarketData?.markets}.{" "}
+            {globalMarketData?.markets}.{' '}
           </Text>
           The number of all ICO's (Initial Coin Offerring) are{' '}
           <Text as='span' fontWeight={'bold'} color='gray.600'>
@@ -68,7 +65,7 @@ const GlobalMarketData = () => {
         </Text>
       </Text>
     </Flex>
-  )
-}
+  );
+};
 
-export default GlobalMarketData
+export default GlobalMarketData;

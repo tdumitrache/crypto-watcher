@@ -15,6 +15,9 @@ export interface IGlobalMarketData {
   total_volume: any;
   markets: number;
   ended_icos: number;
-  market_cap_percentage: object;
+  market_cap_percentage: {
+    btc: number;
+    eth: number;
+  };
   market_cap_change_percentage_24h_usd: number;
 }

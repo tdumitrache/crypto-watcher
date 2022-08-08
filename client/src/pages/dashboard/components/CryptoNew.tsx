@@ -4,7 +4,7 @@ import { ICryptoNew } from '../types';
 
 const CryptoNew: FC<ICryptoNew> = ({ title, url, imgurl }) => {
   return (
-    <ChakraLink href={url} target="_blank">
+    <ChakraLink href={url} target='_blank'>
       <Stack direction='column'>
         <Image
           src={imgurl}
@@ -14,7 +14,13 @@ const CryptoNew: FC<ICryptoNew> = ({ title, url, imgurl }) => {
           objectFit={'cover'}
           bgPosition='center'
         />
-        <Text fontSize={'14px'} fontWeight='600' color='gray.700'>
+        <Text
+          fontSize={'14px'}
+          fontWeight='600'
+          color='gray.700'
+          noOfLines={1}
+          title={title}
+        >
           {title}
         </Text>
       </Stack>

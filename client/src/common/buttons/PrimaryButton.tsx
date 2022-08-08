@@ -4,9 +4,10 @@ import { Button } from '@chakra-ui/react';
 interface PrimaryButtonProps {
   label: string;
   onClick: () => void;
+  [rest: string]: any;
 }
 
-const PrimaryButton: FC<PrimaryButtonProps> = ({ label, onClick }) => {
+const PrimaryButton: FC<PrimaryButtonProps> = ({ label, onClick, ...rest }) => {
   return (
     <Button
       variant='solid'
@@ -14,6 +15,7 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({ label, onClick }) => {
       size='sm'
       fontSize='10px'
       fontWeight={'bold'}
+      {...rest}
       onClick={onClick}
     >
       {label}

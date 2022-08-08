@@ -12,6 +12,7 @@ import {
 import logo from 'assets/images/chainlink.png';
 import { SecondaryButton } from 'common/buttons';
 import PrimaryButton from 'common/buttons/PrimaryButton';
+import TransparentIconButon from 'common/buttons/TransparentIconButon';
 import Separator from 'common/separators';
 import { AiFillPieChart, AiFillStar } from 'react-icons/ai';
 import { BsFillSunFill } from 'react-icons/bs';
@@ -19,10 +20,21 @@ import { MdOutlineNightlightRound } from 'react-icons/md';
 import { RiGasStationFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { EthGasMenu } from './components';
+import { useQuery } from 'react-query';
 import SearchCoins from './components/search-coins';
+import { getGlobalMarketData } from 'api/coins';
+import LoadingSpinner from 'common/loading-spinner';
+import { formatCurrency } from 'utilities/formatCurrency';
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const { data: globalMarketData, isFetching: isFetchingGlobalMarketData } =
+    useQuery('globalMarketData', () => getGlobalMarketData());
+
+  if (isFetchingGlobalMarketData) {
+    return <LoadingSpinner size={150} />;
+  }
 
   return (
     <Flex
@@ -43,7 +55,7 @@ const Header = () => {
                 Cryptos
               </Text>
               <Text fontSize='xs' color='blue.600' fontWeight={'700'}>
-                20.000
+                {globalMarketData?.active_cryptocurrencies}
               </Text>
             </Stack>
             <Stack align='center' spacing='6px' direction={'row'}>
@@ -51,7 +63,7 @@ const Header = () => {
                 Exchanges
               </Text>
               <Text fontSize='xs' color='blue.600' fontWeight={'700'}>
-                499
+                {globalMarketData?.markets}
               </Text>
             </Stack>
             <Stack align='center' spacing='6px' direction={'row'}>
@@ -59,7 +71,7 @@ const Header = () => {
                 Market Cap
               </Text>
               <Text fontSize='xs' color='blue.600' fontWeight={'700'}>
-                $1.074.011.482.189,427
+                {formatCurrency(globalMarketData?.total_market_cap?.usd)}
               </Text>
             </Stack>
             <Stack align='center' spacing='6px' direction={'row'}>
@@ -67,7 +79,7 @@ const Header = () => {
                 24h Vol
               </Text>
               <Text fontSize='xs' color='blue.600' fontWeight={'700'}>
-                $73.024.403.674,79
+                {formatCurrency(globalMarketData?.total_volume?.usd)}
               </Text>
             </Stack>
             <Stack align='center' spacing='6px' direction={'row'}>
@@ -75,7 +87,8 @@ const Header = () => {
                 Dominance:
               </Text>
               <Text fontSize='xs' color='blue.600' fontWeight={'700'}>
-                BTC: 41.1% ETH: 18.8%
+                BTC: {globalMarketData?.market_cap_percentage?.btc.toFixed(2)}%
+                ETH: {globalMarketData?.market_cap_percentage?.eth.toFixed(2)}%
               </Text>
             </Stack>
             <Stack align='center' spacing='6px' direction={'row'}>
@@ -174,30 +187,9 @@ const Header = () => {
               Learn
             </Text>
           </Stack>
-          <Stack direction='row' align='center' spacing='12px'>
-            <Stack
-              direction='row'
-              align={'center'}
-              spacing='4px'
-              cursor={'pointer'}
-            >
-              <Icon as={AiFillStar} w='18px' h='18px' color='gray.400' />
-              <Text fontSize='12px' color='gray.700' fontWeight={'bold'}>
-                Watchlist
-              </Text>
-            </Stack>
-            <Stack
-              direction='row'
-              align={'center'}
-              spacing='4px'
-              cursor={'pointer'}
-              me='12px'
-            >
-              <Icon as={AiFillPieChart} w='18px' h='18px' color='gray.400' />
-              <Text fontSize='12px' color='gray.700' fontWeight={'bold'}>
-                Portfolio
-              </Text>
-            </Stack>
+          <Stack direction='row' align='center' spacing='6px'>
+            <TransparentIconButon icon={AiFillStar} label='Watchlist' />
+            <TransparentIconButon icon={AiFillPieChart} label='Portfolio' />
             <SearchCoins searchInput='' />
           </Stack>
         </Stack>
