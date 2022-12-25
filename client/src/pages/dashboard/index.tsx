@@ -11,7 +11,7 @@ import {
   TrendingCoinsCard,
   SubscribeSection,
 } from './components';
-import { ICryptoNew } from './types';
+import { ICryptoNew } from 'types/news';
 import { useCryptoTable } from './hooks';
 
 const Dashboard = () => {
@@ -33,7 +33,8 @@ const Dashboard = () => {
             <LoadingSpinner size={150} />
           ) : (
             <Grid templateColumns='repeat(5, 1fr)' gap='16px' my='24px'>
-              {cryptoNewsData.length > 0 &&
+              {cryptoNewsData &&
+                cryptoNewsData.length > 0 &&
                 cryptoNewsData
                   ?.filter((_: ICryptoNew, idx: number) => idx < 5)
                   .map((cryptoNew: ICryptoNew, idx: number) => {

@@ -1,6 +1,6 @@
 import { Image, Link as ChakraLink, Stack, Text } from '@chakra-ui/react';
 import { FC } from 'react';
-import { ICryptoNew } from '../types';
+import { ICryptoNew } from 'types/news';
 
 const CryptoNew: FC<ICryptoNew> = ({ title, url, imgurl }) => {
   return (

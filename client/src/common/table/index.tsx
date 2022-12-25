@@ -18,9 +18,11 @@ import {
   Tr,
   Image,
   Progress,
+  Box,
 } from '@chakra-ui/react';
-import { ICryptocurrency } from 'pages/dashboard/types';
+import { ICryptocurrency } from 'types/coins';
 import { useMemo, FC } from 'react';
+import { Link } from 'react-router-dom';
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 import {
   TiArrowSortedDown,
@@ -30,6 +32,7 @@ import {
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
 import { formatCurrency } from 'utilities/formatCurrency';
 import { usePagination, useSortBy, useTable, Column, Cell } from 'react-table';
+import LineChart from 'common/chart';
 
 interface CryptoTableProps<T> {
   columns: Column[];
@@ -45,11 +48,13 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
     () =>
       rows.map((row) => {
         return {
+          id: row.id,
           market_cap_rank: row.market_cap_rank,
           name: {
             image: row.image,
             name: row.name,
             symbol: row.symbol,
+            id: row.id,
           },
           price: row.current_price,
           price_change_percentage_1h_in_currency:
@@ -63,6 +68,10 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
           circulating_supply: {
             max_supply: row.max_supply,
             circulating_supply: row.circulating_supply,
+            symbol: row.symbol,
+          },
+          sparkline_in_7d: {
+            price: row.sparkline_in_7d.price,
             symbol: row.symbol,
           },
         };
@@ -140,12 +149,13 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
           <Stack direction='row' spacing='2px' align='center'>
             <Icon
               as={cell.value > 0 ? TiArrowSortedUp : TiArrowSortedDown}
-              color={cell.value > 0 ? 'green.500' : 'red.500'}
+              color={cell.value > 0 ? 'green.300' : 'red.300'}
+              fontWeight='bold'
               w='16px'
               h='16px'
             />
             <Text
-              color={cell.value > 0 ? 'green.500' : 'red.500'}
+              color={cell.value > 0 ? 'green.300' : 'red.300'}
               fontWeight='bold'
             >{`${cell.value.toFixed(2)}%`}</Text>
           </Stack>
@@ -156,12 +166,13 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
           <Stack direction='row' spacing='2px' align='center'>
             <Icon
               as={cell.value > 0 ? TiArrowSortedUp : TiArrowSortedDown}
-              color={cell.value > 0 ? 'green.500' : 'red.500'}
+              color={cell.value > 0 ? 'green.300' : 'red.300'}
+              fontWeight='bold'
               w='16px'
               h='16px'
             />
             <Text
-              color={cell.value > 0 ? 'green.500' : 'red.500'}
+              color={cell.value > 0 ? 'green.300' : 'red.300'}
               fontWeight='bold'
             >{`${cell.value.toFixed(2)}%`}</Text>
           </Stack>
@@ -172,12 +183,13 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
           <Stack direction='row' spacing='2px' align='center'>
             <Icon
               as={cell.value > 0 ? TiArrowSortedUp : TiArrowSortedDown}
-              color={cell.value > 0 ? 'green.500' : 'red.500'}
+              color={cell.value > 0 ? 'green.300' : 'red.300'}
+              fontWeight='bold'
               w='16px'
               h='16px'
             />
             <Text
-              color={cell.value > 0 ? 'green.500' : 'red.500'}
+              color={cell.value > 0 ? 'green.300' : 'red.300'}
               fontWeight='bold'
             >{`${cell.value.toFixed(2)}%`}</Text>
           </Stack>
@@ -215,6 +227,64 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
             )}
           </Stack>
         );
+        break;
+      case 'last 7 days':
+        const last7DaysArr: string[] = [];
+
+        for (let i = 1; i <= 7; i++) {
+          const day = new Date();
+          day.setDate(day.getDate() - i);
+
+          last7DaysArr.push(day.toDateString());
+        }
+
+        const chartData = cell.value.price
+          .filter((_: number, idx: number) => (idx + 1) % 24 === 0)
+          .map((item: number) => item.toFixed(2));
+
+        content = (
+          <Box minW={'350px'} maxH='120px'>
+            <LineChart
+              chartData={[
+                {
+                  name: cell.value.symbol.toUpperCase(),
+                  data: chartData,
+                },
+              ]}
+              chartOptions={{
+                xaxis: {
+                  categories: last7DaysArr.reverse(),
+                  labels: {
+                    show: false,
+                  },
+                  axisBorder: {
+                    show: false,
+                  },
+                  axisTicks: {
+                    show: false,
+                  },
+                },
+                colors: [
+                  `${
+                    chartData[0] - chartData[chartData.length - 1] <= 0
+                      ? '#4FD1C5'
+                      : '#f02b3d'
+                  }`,
+                ],
+                fill: {
+                  colors: [
+                    `${
+                      chartData[0] - chartData[chartData.length - 1] <= 0
+                        ? '#4FD1C5'
+                        : '#f02b3d'
+                    }`,
+                  ],
+                },
+              }}
+            />
+          </Box>
+        );
+
         break;
       default:
         content = (
@@ -265,47 +335,53 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
           <Thead>
             {headerGroups.map((headerGroup, index) => (
               <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                {headerGroup.headers.map((column, index) => (
-                  <Th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    key={index}
-                  >
-                    <Flex
-                      justify='space-between'
-                      align='center'
-                      fontSize={{ sm: '10px', lg: '12px' }}
-                      color='black'
-                      textTransform={'capitalize'}
-                      fontFamily={'Inter'}
+                {headerGroup.headers.map((column, index) => {
+                  return (
+                    <Th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      key={index}
+                      minW={column.Header === 'Last 7 days' ? '250px' : '100%'}
                     >
-                      {column.render('Header')}
-                      <Icon
-                        w={{ sm: '10px', md: '14px' }}
-                        h={{ sm: '10px', md: '14px' }}
-                        color={'black'}
-                        float='right'
-                        as={
-                          column.isSorted
-                            ? column.isSortedDesc
-                              ? TiArrowSortedDown
-                              : TiArrowSortedUp
-                            : TiArrowUnsorted
-                        }
-                      />
-                    </Flex>
-                  </Th>
-                ))}
+                      <Flex
+                        justify='space-between'
+                        align='center'
+                        fontSize={{ sm: '10px', lg: '12px' }}
+                        color='black'
+                        textTransform={'capitalize'}
+                        fontFamily={'Inter'}
+                      >
+                        {column.render('Header')}
+                        <Icon
+                          w={{ sm: '10px', md: '14px' }}
+                          h={{ sm: '10px', md: '14px' }}
+                          color={'black'}
+                          float='right'
+                          as={
+                            column.isSorted
+                              ? column.isSortedDesc
+                                ? TiArrowSortedDown
+                                : TiArrowSortedUp
+                              : TiArrowUnsorted
+                          }
+                        />
+                      </Flex>
+                    </Th>
+                  );
+                })}
               </Tr>
             ))}
           </Thead>
           <Tbody {...getTableBodyProps()}>
             {page.map((row, index) => {
-              console.log(row);
               prepareRow(row);
               return (
-                <Tr {...row.getRowProps()} key={index}>
+                <Tr
+                  {...row.getRowProps()}
+                  key={index}
+                  _hover={{ background: '#f4f4f4' }}
+                >
                   {row.cells.map((cell, index) => {
-                    let content = getContentByColumnHeader(
+                    const content = getContentByColumnHeader(
                       cell.column.Header?.toString().toLocaleLowerCase()!,
                       cell
                     );
@@ -314,8 +390,14 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
                         {...cell.getCellProps()}
                         fontSize={{ sm: '14px' }}
                         key={index}
+                        px={
+                          cell.column.Header === 'Last 7 days' ? '0px' : '20px'
+                        }
+                        py='0px'
                       >
-                        {content}
+                        <Link to={`/currencies/${row.values.name.id}`}>
+                          {content}
+                        </Link>
                       </Td>
                     );
                   })}

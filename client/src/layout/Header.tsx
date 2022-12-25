@@ -71,7 +71,7 @@ const Header = () => {
                 Market Cap
               </Text>
               <Text fontSize='xs' color='blue.600' fontWeight={'700'}>
-                {formatCurrency(globalMarketData?.total_market_cap?.usd)}
+                {formatCurrency(globalMarketData?.total_market_cap?.usd!)}
               </Text>
             </Stack>
             <Stack align='center' spacing='6px' direction={'row'}>

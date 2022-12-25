@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { ICryptocurrency } from '../types';
+import { ICryptocurrency } from 'api/coins/types';
 import { getAllCoins } from 'api/coins';
 
 const useCryptoTable = () => {
@@ -43,10 +43,10 @@ const useCryptoTable = () => {
       Header: 'Circulating Supply',
       accessor: 'circulating_supply',
     },
-    // {
-    //   Header: 'Last 7 days',
-    //   accessor: 'last 7 days',
-    // },
+    {
+      Header: 'Last 7 days',
+      accessor: 'sparkline_in_7d',
+    },
   ];
 
   const { isFetching: isFetchingCoins } = useQuery(
@@ -73,7 +73,7 @@ const useCryptoTable = () => {
               total_volume: coin.total_volume,
               circulating_supply: coin.circulating_supply,
               max_supply: coin.max_supply,
-              // sparkline_in_7d: { price: [...coin.sparkline_in_7d.price] },
+              sparkline_in_7d: { price: coin.sparkline_in_7d.price },
             };
           });
           setRows(coins);

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ICryptoNew } from 'types/news';
 
 const API_URL = 'https://mrnewsapi.p.rapidapi.com/news/crypto';
 
@@ -9,7 +10,7 @@ const options = {
   },
 };
 
-export const getCryptoNews = async (): Promise<any> => {
+export const getCryptoNews = async (): Promise<ICryptoNew[]> => {
   const response = await axios.get(API_URL, options);
 
   return response.data;

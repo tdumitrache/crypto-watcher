@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import Dashboard from 'pages/dashboard/index';
+import Dashboard from 'pages/dashboard';
+import Currency from 'pages/currency';
 import { Layout } from 'layout';
 
 const App = () => {
@@ -8,6 +9,9 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path='/' element={<Dashboard />} />
+          <Route path='/currencies'>
+            <Route path=':id' element={<Currency />} />
+          </Route>
         </Routes>
       </Layout>
     </>
