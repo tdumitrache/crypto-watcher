@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { ICryptocurrency } from 'api/coins/types';
+import { ICryptocurrency } from 'types/coins';
 import { getAllCoins } from 'api/coins';
 
 const useCryptoTable = () => {

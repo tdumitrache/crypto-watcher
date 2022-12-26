@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { Footer, Header } from '.';
 
-const Layout: FC<ReactNode> = ({ children }) => {
+const Layout: FC<any> = ({ children }) => {
   return (
     <>
       <Header />

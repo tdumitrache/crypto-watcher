@@ -1,39 +1,38 @@
-import { FC, useState } from 'react';
-import { ICoinData } from 'types/coins';
-import { Link } from 'react-router-dom';
 import {
-  Container,
-  Stack,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Text,
+  Container,
+  Flex,
+  Grid,
   Icon,
   Image,
-  Grid,
-  Badge,
-  Flex,
-  Tooltip,
-  Progress,
   Link as ChakraLink,
+  Progress,
+  Stack,
+  Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import {
-  AiOutlineRight,
-  AiOutlineStar,
-  AiFillCaretDown,
-  AiFillCaretUp,
-} from 'react-icons/ai';
-import { FiExternalLink, FiLink } from 'react-icons/fi';
-import { BsInfoCircleFill } from 'react-icons/bs';
-import { MdVerified } from 'react-icons/md';
-import {
+  ErrorBadge,
   PrimaryBadge,
   SecondaryBadge,
-  ErrorBadge,
   SuccessBadge,
 } from 'common/badges';
-import { formatCurrency } from 'utilities/formatCurrency';
 import Separator from 'common/separators';
+import { FC } from 'react';
+import {
+  AiFillCaretDown,
+  AiFillCaretUp,
+  AiOutlineRight,
+  AiOutlineStar,
+} from 'react-icons/ai';
+import { BsInfoCircleFill } from 'react-icons/bs';
+import { FiExternalLink, FiLink } from 'react-icons/fi';
+import { MdVerified } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { ICoinData } from 'types/coins';
+import { formatCurrency } from 'utilities/formatCurrency';
 
 interface HeaderProps {
   data: ICoinData;
@@ -119,7 +118,6 @@ const Header: FC<HeaderProps> = ({ data }) => {
               align='center'
               gap='4px'
               maxW='400px'
-              flexShrink={'shrink'}
               flexWrap='wrap'
               flex='1 1 1'
               mt='50px !important'

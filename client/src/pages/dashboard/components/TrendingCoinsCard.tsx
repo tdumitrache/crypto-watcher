@@ -1,22 +1,13 @@
 import { Badge, Flex, Icon, Image, Stack, Text } from '@chakra-ui/react';
-import { ITrendyCoin } from 'api/coins/types';
-import LoadingSpinner from 'common/loading-spinner';
 import { FC, Fragment } from 'react';
 import { FcLike } from 'react-icons/fc';
+import { ITrendyCoin } from 'types/coins';
 
 interface TrendingCoinsCardProps {
   trendiestCoins: ITrendyCoin[];
-  isFetchingTrendiestCoins: boolean;
 }
 
-const TrendingCoinsCard: FC<TrendingCoinsCardProps> = ({
-  trendiestCoins,
-  isFetchingTrendiestCoins,
-}) => {
-  if (isFetchingTrendiestCoins) {
-    return <LoadingSpinner size={150} />;
-  }
-
+const TrendingCoinsCard: FC<TrendingCoinsCardProps> = ({ trendiestCoins }) => {
   return (
     <Flex
       flexDirection='column'

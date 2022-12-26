@@ -64,23 +64,26 @@ const Dashboard = () => {
               />
             </Stack>
           </Stack>
-          <Stack
-            direction='row'
-            spacing='12px'
-            align='center'
-            display={highlight ? 'flex' : 'none'}
-          >
-            <TrendingCoinsCard
-              trendiestCoins={trendiestCoins?.filter((_, idx) => idx < 3)!}
-              isFetchingTrendiestCoins={isFetchingTrendiestCoins}
-            />
-            <TrendingCoinsCard
-              trendiestCoins={
-                trendiestCoins?.filter((_, idx) => idx > 2 && idx < 6)!
-              }
-              isFetchingTrendiestCoins={isFetchingTrendiestCoins}
-            />
-          </Stack>
+          {isFetchingTrendiestCoins ? (
+            <LoadingSpinner size={150} />
+          ) : (
+            <Stack
+              direction='row'
+              spacing='12px'
+              align='center'
+              display={highlight ? 'flex' : 'none'}
+            >
+              <TrendingCoinsCard
+                trendiestCoins={trendiestCoins?.filter((_, idx) => idx < 3)!}
+              />
+              <TrendingCoinsCard
+                trendiestCoins={
+                  trendiestCoins?.filter((_, idx) => idx > 2 && idx < 6)!
+                }
+              />
+            </Stack>
+          )}
+
           {isFetchingCoins ? (
             <LoadingSpinner size={150} />
           ) : (
