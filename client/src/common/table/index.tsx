@@ -1,12 +1,15 @@
 import {
+  Box,
   Button,
   Flex,
   Icon,
+  Image,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Progress,
   Select,
   Stack,
   Table,
@@ -16,23 +19,20 @@ import {
   Th,
   Thead,
   Tr,
-  Image,
-  Progress,
-  Box,
 } from '@chakra-ui/react';
-import { ICryptocurrency } from 'types/coins';
-import { useMemo, FC } from 'react';
-import { Link } from 'react-router-dom';
+import LineChart from 'common/chart';
+import { FC, useMemo } from 'react';
+import { AiOutlineStar } from 'react-icons/ai';
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 import {
   TiArrowSortedDown,
   TiArrowSortedUp,
   TiArrowUnsorted,
 } from 'react-icons/ti';
-import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import { Cell, Column, usePagination, useSortBy, useTable } from 'react-table';
+import { ICryptocurrency } from 'types/coins';
 import { formatCurrency } from 'utilities/formatCurrency';
-import { usePagination, useSortBy, useTable, Column, Cell } from 'react-table';
-import LineChart from 'common/chart';
 
 interface CryptoTableProps<T> {
   columns: Column[];
@@ -43,7 +43,7 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
   columns,
   rows,
 }) => {
-  const columnsData = useMemo(() => columns, []);
+  const columnsData = useMemo(() => columns, [columns]);
   const rowsData = useMemo(
     () =>
       rows.map((row) => {
@@ -76,7 +76,7 @@ const CryptoTable: FC<CryptoTableProps<ICryptocurrency>> = ({
           },
         };
       }),
-    []
+    [rows]
   );
 
   const tableInstance = useTable(

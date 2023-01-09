@@ -19,6 +19,7 @@ import {
   SecondaryBadge,
   SuccessBadge,
 } from 'common/badges';
+import PriceChange from 'common/price-change';
 import Separator from 'common/separators';
 import { FC } from 'react';
 import {
@@ -40,6 +41,8 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ data }) => {
   const { homepage, blockchain_site, subreddit_url, repos_url } = data.links;
+
+  console.log(data.links);
 
   return (
     <Container maxW={'1440px'} my='24px'>
@@ -156,23 +159,26 @@ const Header: FC<HeaderProps> = ({ data }) => {
                 }
                 textTransform='capitalize'
               />
-              <PrimaryBadge
-                content={
-                  <ChakraLink href={subreddit_url[0]} target='_blank'>
-                    <Stack direction='row' spacing='4px' align='center'>
-                      <Icon as={FiLink} color='gray.500' w='10px' h='10px' />
-                      <Text>Reddit</Text>
-                      <Icon
-                        as={FiExternalLink}
-                        color='gray.500'
-                        w='10px'
-                        h='10px'
-                      />
-                    </Stack>
-                  </ChakraLink>
-                }
-                textTransform='capitalize'
-              />
+              {subreddit_url && (
+                <PrimaryBadge
+                  content={
+                    <ChakraLink href={subreddit_url[0]} target='_blank'>
+                      <Stack direction='row' spacing='4px' align='center'>
+                        <Icon as={FiLink} color='gray.500' w='10px' h='10px' />
+                        <Text>Reddit</Text>
+                        <Icon
+                          as={FiExternalLink}
+                          color='gray.500'
+                          w='10px'
+                          h='10px'
+                        />
+                      </Stack>
+                    </ChakraLink>
+                  }
+                  textTransform='capitalize'
+                />
+              )}
+
               <PrimaryBadge
                 content={
                   <ChakraLink href={repos_url.github[0]} target='_blank'>
@@ -280,35 +286,9 @@ const Header: FC<HeaderProps> = ({ data }) => {
                   color='gray.400'
                   fontWeight='bold'
                 >{`${data.market_data.current_price.eth.toFixed(2)} ETH`}</Text>
-                <Stack direction='row' align='center' spacing='4px'>
-                  <Icon
-                    as={
-                      data.market_data.price_change_24h_in_currency.eth < 0
-                        ? AiFillCaretDown
-                        : AiFillCaretUp
-                    }
-                    w='12px'
-                    h='12px'
-                    color={
-                      data.market_data.price_change_24h_in_currency.eth < 0
-                        ? '#ea3943'
-                        : '#16c784'
-                    }
-                  />
-                  <Text
-                    color={
-                      data.market_data.price_change_24h_in_currency.eth < 0
-                        ? '#ea3943'
-                        : '#16c784'
-                    }
-                    fontWeight='bold'
-                    fontSize='14px'
-                  >
-                    {`${data.market_data.price_change_24h_in_currency.eth.toFixed(
-                      2
-                    )} %`}
-                  </Text>
-                </Stack>
+                <PriceChange
+                  percentage={data.market_data.price_change_24h_in_currency.eth}
+                />
               </Stack>
 
               <Stack direction='row' align='center' spacing='12px'>
@@ -389,45 +369,9 @@ const Header: FC<HeaderProps> = ({ data }) => {
                 <Text fontWeight={'bold'} color='gray.700' fontSize='12px'>
                   {formatCurrency(data.market_data.market_cap.usd)}
                 </Text>
-                <Stack align='center' direction='row' spacing='4px'>
-                  {data.market_data.price_change_percentage_24h < 0 ? (
-                    <>
-                      <Icon
-                        as={AiFillCaretDown}
-                        w='12px'
-                        h='12px'
-                        color={'#ea3943'}
-                      />
-                      <Text
-                        fontWeight={'bold'}
-                        color={'#ea3943'}
-                        fontSize='12px'
-                      >
-                        {`${data.market_data.price_change_percentage_24h.toFixed(
-                          2
-                        )}%`}
-                      </Text>
-                    </>
-                  ) : (
-                    <>
-                      <Icon
-                        as={AiFillCaretUp}
-                        w='12px'
-                        h='12px'
-                        color={'#16c784'}
-                      />
-                      <Text
-                        fontWeight={'bold'}
-                        color={'#16c784'}
-                        fontSize='12px'
-                      >
-                        {`${data.market_data.price_change_percentage_24h.toFixed(
-                          2
-                        )}%`}
-                      </Text>
-                    </>
-                  )}
-                </Stack>
+                <PriceChange
+                  percentage={data.market_data.price_change_percentage_24h}
+                />
               </Stack>
               <Separator variant='vertical' h='150px' />
               <Stack direction={'column'} spacing='4px' align={'start'}>
@@ -468,45 +412,9 @@ const Header: FC<HeaderProps> = ({ data }) => {
                 <Text fontWeight={'bold'} color='gray.700' fontSize='12px'>
                   {formatCurrency(data.market_data.fully_diluted_valuation.usd)}
                 </Text>
-                <Stack align='center' direction='row' spacing='4px'>
-                  {data.market_data.price_change_percentage_24h < 0 ? (
-                    <>
-                      <Icon
-                        as={AiFillCaretDown}
-                        w='12px'
-                        h='12px'
-                        color={'#ea3943'}
-                      />
-                      <Text
-                        fontWeight={'bold'}
-                        color={'#ea3943'}
-                        fontSize='12px'
-                      >
-                        {`${(
-                          data.market_data.price_change_percentage_24h + 0.01
-                        ).toFixed(2)}%`}
-                      </Text>
-                    </>
-                  ) : (
-                    <>
-                      <Icon
-                        as={AiFillCaretUp}
-                        w='12px'
-                        h='12px'
-                        color={'#16c784'}
-                      />
-                      <Text
-                        fontWeight={'bold'}
-                        color={'#16c784'}
-                        fontSize='12px'
-                      >
-                        {`${(
-                          data.market_data.price_change_percentage_24h + 0.01
-                        ).toFixed(2)}%`}
-                      </Text>
-                    </>
-                  )}
-                </Stack>
+                <PriceChange
+                  percentage={data.market_data.price_change_percentage_24h}
+                />
               </Stack>
               <Separator variant='vertical' h='150px' />
               <Stack direction={'column'} spacing='4px' align={'start'}>

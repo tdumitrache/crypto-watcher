@@ -5,10 +5,13 @@ const errorHandler = require('./middleware/error.middleware');
 const userRouter = require('./routes/users.routes');
 
 const express = require('express');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use('/api/users', userRouter);
