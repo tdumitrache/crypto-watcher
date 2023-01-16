@@ -13,6 +13,21 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, 'Please add a password'],
   },
+  transactions: {
+    type: [
+      {
+        tokenPrice: {
+          type: Number,
+        },
+        buyPrice: {
+          type: Number,
+        },
+        assetId: {
+          type: String,
+        },
+      },
+    ],
+  },
 });
 
 module.exports = mongoose.model('Users', userSchema);

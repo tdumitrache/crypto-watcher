@@ -1,30 +1,28 @@
-import { FC } from 'react';
 import {
-  Table,
-  Thead,
-  Tbody,
-  Image,
-  Icon,
-  Text,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
   Button,
-  Stack,
   Flex,
+  Icon,
+  Image,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react';
+import PriceChange from 'common/price-change';
+import { FC } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { Column } from 'react-table';
 import {
   formatCurrency,
-  getWeightedMean,
   getAmountByTransactions,
+  getWeightedMean,
 } from 'utilities';
 import { IAssetsRow } from '../';
-import { Column } from 'react-table';
-import PriceChange from 'common/price-change';
 
 interface AssetsTableProps {
   columns: Column[];
@@ -69,7 +67,7 @@ const AssetsTable: FC<AssetsTableProps> = ({ rows, columns }) => {
                       fontWeight='bold'
                       className='bold    bold-name'
                     >
-                      {row.symbol}
+                      {row.symbol.toUpperCase()}
                     </Text>
                   </Stack>
                 </Td>
@@ -88,8 +86,8 @@ const AssetsTable: FC<AssetsTableProps> = ({ rows, columns }) => {
                       {formatCurrency(
                         row.price *
                           getAmountByTransactions(
-                            row.transactions.tokenPrices,
-                            row.transactions.buyPrices
+                            row.transactions.map((el) => el.tokenPrice),
+                            row.transactions.map((el) => el.buyPrice)
                           )
                       )}
                     </Text>
@@ -98,20 +96,20 @@ const AssetsTable: FC<AssetsTableProps> = ({ rows, columns }) => {
                       fontSize='14px'
                       fontWeight='bold'
                     >{`${getAmountByTransactions(
-                      row.transactions.tokenPrices,
-                      row.transactions.buyPrices
+                      row.transactions.map((el) => el.tokenPrice),
+                      row.transactions.map((el) => el.buyPrice)
                     )} ${row.symbol}`}</Text>
                   </Flex>
                 </Td>
                 <Td>
                   {' '}
                   <Text color='#000' fontSize='14px' fontWeight='bold'>
-                    {formatCurrency(
+                    {/* {formatCurrency(
                       getWeightedMean(
-                        row.transactions.tokenPrices,
+                        row.transactions.map((el) => el.tokenPrice),
                         [90, 30.6, 70, 17.82, 72.05, 138.6, 28.5]
                       )
-                    )}
+                    )} */}
                   </Text>
                 </Td>
                 <Td>
@@ -120,12 +118,12 @@ const AssetsTable: FC<AssetsTableProps> = ({ rows, columns }) => {
                       {formatCurrency(
                         row.price *
                           getAmountByTransactions(
-                            row.transactions.tokenPrices,
-                            row.transactions.buyPrices
+                            row.transactions.map((el) => el.tokenPrice),
+                            row.transactions.map((el) => el.buyPrice)
                           ) -
-                          row.transactions.buyPrices.reduce(
-                            (acc, el) => (acc += el)
-                          )
+                          row.transactions
+                            .map((el) => el.buyPrice)
+                            .reduce((acc, el) => (acc += el))
                       )}
                     </Text>
                     <PriceChange percentage={0} />

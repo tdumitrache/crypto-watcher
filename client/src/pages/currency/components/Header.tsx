@@ -42,8 +42,6 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = ({ data }) => {
   const { homepage, blockchain_site, subreddit_url, repos_url } = data.links;
 
-  console.log(data.links);
-
   return (
     <Container maxW={'1440px'} my='24px'>
       <Stack direction='column' spacing='24px'>

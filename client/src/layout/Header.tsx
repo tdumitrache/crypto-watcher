@@ -16,7 +16,7 @@ import TransparentIconButon from 'common/buttons/TransparentIconButon';
 import LoadingSpinner from 'common/loading-spinner';
 import Separator from 'common/separators';
 import { AuthContext } from 'context/AuthContext';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AiFillPieChart } from 'react-icons/ai';
 import { RiGasStationFill } from 'react-icons/ri';
 import { useQuery } from 'react-query';
@@ -43,11 +43,14 @@ const Header = () => {
   const { data: globalMarketData, isFetching: isFetchingGlobalMarketData } =
     useQuery('globalMarketData', () => getGlobalMarketData());
 
-  const { data: profileData } = useQuery('getUserProfile', () =>
-    getUserProfile()
+  const { data: profileData, refetch: refetchProfileData } = useQuery(
+    `getUserProfile/${token}`,
+    () => getUserProfile()
   );
 
-  console.log(profileData);
+  useEffect(() => {
+    refetchProfileData();
+  }, [token, refetchProfileData]);
 
   if (isFetchingGlobalMarketData) {
     return <LoadingSpinner size={150} />;

@@ -30,3 +30,23 @@ export const getUserProfile = async () => {
 
   return response.data;
 };
+
+export const getUserTransactions = async () => {
+  const response = await axiosInstance.get(`${API_URL}/assets`);
+
+  return response.data;
+};
+
+export const addNewTransaction = async (
+  assetId: string,
+  tokenPrice: number,
+  buyPrice: number
+) => {
+  const response = await axiosInstance.post(`${API_URL}/assets`, {
+    assetId,
+    tokenPrice,
+    buyPrice,
+  });
+
+  return response.data;
+};

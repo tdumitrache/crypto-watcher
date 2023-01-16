@@ -86,6 +86,37 @@ const getMyProfile = asyncHandler(async (req, res) => {
   });
 });
 
+const getMyAssets = asyncHandler(async (req, res) => {
+  const { transactions } = req.user;
+
+  res.status(200).json(transactions);
+});
+
+const addNewTransaction = asyncHandler(async (req, res) => {
+  const { assetId, tokenPrice, buyPrice } = req.body;
+  const { _id } = req.user;
+
+  const user = await User.findById(_id);
+
+  const newTransaction = {
+    assetId,
+    tokenPrice,
+    buyPrice,
+  };
+
+  await User.findByIdAndUpdate(_id, {
+    $set: { transactions: [...user.transactions, newTransaction] },
+  });
+
+  console.log(user);
+
+  res.status(201).json({
+    assetId,
+    tokenPrice,
+    buyPrice,
+  });
+});
+
 const generateToken = (id) => {
   const token = jwt.sign({ id }, process.env.JWT_TOKEN, {
     expiresIn: '1d',
@@ -98,4 +129,6 @@ module.exports = {
   registerUser,
   loginUser,
   getMyProfile,
+  getMyAssets,
+  addNewTransaction,
 };

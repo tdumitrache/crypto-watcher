@@ -47,3 +47,9 @@ export const getCoinMarketChart = async (
 
   return response.data;
 };
+
+export const getCoinsByQuery = async (query: string = '') => {
+  const response = await axios.get(`${API_URL}/search?query=%20${query}`);
+
+  return response.data;
+};
