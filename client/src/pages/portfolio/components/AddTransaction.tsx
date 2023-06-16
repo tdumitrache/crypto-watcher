@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from "react";
 
 import {
   Button,
@@ -13,13 +13,13 @@ import {
   NumberInputStepper,
   Text,
   useToast,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { getCoinData } from 'api/coins';
-import { addNewTransaction } from 'api/users';
-import LoadingSpinner from 'common/loading-spinner';
-import { useMutation, useQuery } from 'react-query';
-import { formatCurrency } from 'utilities';
+import { getCoinData } from "api/coins";
+import { addNewTransaction } from "api/users";
+import LoadingSpinner from "common/loading-spinner";
+import { useMutation, useQuery } from "react-query";
+import { formatCurrency } from "utilities";
 
 interface AddTransactionProps {
   cryptoId: string;
@@ -38,8 +38,8 @@ const AddTransaction: FC<AddTransactionProps> = ({
   setIsVisible,
   onCloseBuyModal,
 }) => {
-  const [amount, setAmount] = useState<string>('0');
-  const [value, setValue] = useState<string>('0');
+  const [amount, setAmount] = useState<string>("0");
+  const [value, setValue] = useState<string>("0");
 
   const toast = useToast();
 
@@ -52,29 +52,30 @@ const AddTransaction: FC<AddTransactionProps> = ({
     mutate: mutateNewTransaction,
     isLoading: isLoadingAddNewTransaction,
   } = useMutation(
-    'addNewTransaction',
+    "addNewTransaction",
     () =>
       addNewTransaction(
         cryptoId,
-        cryptoData?.market_data?.current_price?.usd ?? 0,
+        Number(value) ?? 0,
         Number(value) * Number(amount)
       ),
     {
       onSuccess: () => {
         toast({
-          title: 'Transaction is done!',
-          description: 'You succesfully executed a new transaction.',
-          status: 'success',
+          title: "Transaction is done!",
+          description: "You succesfully executed a new transaction.",
+          status: "success",
           duration: 2000,
           isClosable: true,
         });
+
         onCloseBuyModal();
       },
       onError: (error) => {
         toast({
-          title: 'Oops! Something went wrong',
+          title: "Oops! Something went wrong",
           description: String(error),
-          status: 'error',
+          status: "error",
           duration: 2000,
           isClosable: true,
         });
@@ -102,26 +103,26 @@ const AddTransaction: FC<AddTransactionProps> = ({
   }
 
   return (
-    <Flex direction='column' gap='20px'>
-      <Flex align='center' gap='6px'>
-        <Image src={cryptoData?.image?.small} w='24px' h='24px' />
-        <Text fontSize='14px' fontWeight={'bold'}>
+    <Flex direction="column" gap="20px">
+      <Flex align="center" gap="6px">
+        <Image src={cryptoData?.image?.small} w="24px" h="24px" />
+        <Text fontSize="14px" fontWeight={"bold"}>
           {cryptoData?.name}
         </Text>
-        <Text fontSize='14px' fontWeight={'bold'} color='rgb(128, 138, 157)'>
+        <Text fontSize="14px" fontWeight={"bold"} color="rgb(128, 138, 157)">
           {cryptoData?.symbol?.toUpperCase()}
         </Text>
       </Flex>
-      <Flex align='center' gap='6px'>
+      <Flex align="center" gap="6px">
         <FormControl>
-          <FormLabel fontSize='14px' fontWeight='bold'>
+          <FormLabel fontSize="14px" fontWeight="bold">
             Quantity
           </FormLabel>
           <NumberInput
             defaultValue={0}
             min={0}
             step={1}
-            color='#000'
+            color="#000"
             value={amount}
             onChange={(e) => setAmount(e)}
             fontWeight={500}
@@ -134,13 +135,13 @@ const AddTransaction: FC<AddTransactionProps> = ({
           </NumberInput>
         </FormControl>
         <FormControl>
-          <FormLabel fontSize='14px' fontWeight='bold'>
+          <FormLabel fontSize="14px" fontWeight="bold">
             Price Per Coin
           </FormLabel>
           <NumberInput
             value={formatCurrency(Number(value))}
             min={0}
-            color='#000'
+            color="#000"
             fontWeight={500}
             onChange={(e) => setValue(e)}
           >
@@ -153,20 +154,20 @@ const AddTransaction: FC<AddTransactionProps> = ({
         </FormControl>
       </Flex>
       <Flex
-        direction={'column'}
-        gap='8px'
-        borderRadius={'8px'}
-        padding='24px'
-        background='rgb(239, 242, 245)'
+        direction={"column"}
+        gap="8px"
+        borderRadius={"8px"}
+        padding="24px"
+        background="rgb(239, 242, 245)"
       >
-        <Text fontSize='14px' color='rgb(88, 102, 126)'>
+        <Text fontSize="14px" color="rgb(88, 102, 126)">
           Total Spent
         </Text>
-        <Text fontSize='24px' color='#000' fontWeight={'bold'}>
+        <Text fontSize="24px" color="#000" fontWeight={"bold"}>
           {formatCurrency(Number(amount) * Number(value))}
         </Text>
       </Flex>
-      <Button colorScheme='blue' onClick={handleAddNewTransaction}>
+      <Button colorScheme="blue" onClick={handleAddNewTransaction}>
         Add Transaction
       </Button>
     </Flex>

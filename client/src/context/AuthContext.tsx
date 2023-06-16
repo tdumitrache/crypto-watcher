@@ -1,8 +1,8 @@
-import { useLocalStorage } from 'hooks';
-import { FC, createContext, useState, ReactNode, useEffect } from 'react';
+import { useLocalStorage } from "hooks";
+import { FC, createContext, useState, ReactNode, useEffect } from "react";
 
 const initialState = {
-  token: '',
+  token: "",
   setToken: (_: string) => {},
   isAuthenticated: false,
 };
@@ -20,8 +20,8 @@ interface AuthContextWrapperProps {
 const AuthContext = createContext<IAuthContext>(initialState);
 
 const AuthContextWrapper: FC<AuthContextWrapperProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [token, setToken] = useLocalStorage('token', '');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useLocalStorage("token", "");
 
   useEffect(() => {
     if (token) {

@@ -86,34 +86,68 @@ const getMyProfile = asyncHandler(async (req, res) => {
   });
 });
 
+
+// @route GET /users/assets
+// @desc  Gets my profile assets data
+// @access PRIVATE
+
 const getMyAssets = asyncHandler(async (req, res) => {
   const { transactions } = req.user;
 
   res.status(200).json(transactions);
 });
 
+// @route POST /users/assets
+// @desc  Adds new transaction
+// @access PRIVATE
+
 const addNewTransaction = asyncHandler(async (req, res) => {
   const { assetId, tokenPrice, buyPrice } = req.body;
+  const timestamp = Date.now();
+
   const { _id } = req.user;
 
   const user = await User.findById(_id);
+
 
   const newTransaction = {
     assetId,
     tokenPrice,
     buyPrice,
+    timestamp
   };
 
   await User.findByIdAndUpdate(_id, {
-    $set: { transactions: [...user.transactions, newTransaction] },
+    $set: { transactions: [...user.transactions, { ...newTransaction, timestamp }] },
   });
 
-  console.log(user);
 
   res.status(201).json({
     assetId,
     tokenPrice,
     buyPrice,
+    timestamp
+  });
+});
+
+// @route DELETE /users/assets
+// @desc  Deletes asset with specific id
+// @access PRIVATE
+
+const deleteAsset = asyncHandler(async (req, res) => {
+  const { assetId } = req.body;
+  const { _id } = req.user;
+
+  const user = await User.findById(_id);
+
+
+  await User.findByIdAndUpdate(_id, {
+    $set: { transactions: user.transactions.filter((tx) => tx.assetId !== assetId) },
+  });
+
+
+  res.status(200).json({
+    assetId,
   });
 });
 
@@ -131,4 +165,5 @@ module.exports = {
   getMyProfile,
   getMyAssets,
   addNewTransaction,
+  deleteAsset
 };

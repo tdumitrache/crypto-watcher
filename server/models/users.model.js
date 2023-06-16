@@ -25,6 +25,9 @@ const userSchema = mongoose.Schema({
         assetId: {
           type: String,
         },
+        timestamp: {
+          type: Number
+        }
       },
     ],
   },

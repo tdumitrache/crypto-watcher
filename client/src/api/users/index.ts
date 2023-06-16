@@ -1,6 +1,6 @@
-import axiosInstance from 'config/axios';
+import axiosInstance from "config/axios";
 
-const API_URL = '/users';
+const API_URL = "/users";
 
 export const loginUser = async (email: string, password: string) => {
   const response = await axiosInstance.post(`${API_URL}/login`, {
@@ -46,6 +46,14 @@ export const addNewTransaction = async (
     assetId,
     tokenPrice,
     buyPrice,
+  });
+
+  return response.data;
+};
+
+export const deleteAsset = async (assetId: string) => {
+  const response = await axiosInstance.delete(`${API_URL}/assets`, {
+    data: { assetId },
   });
 
   return response.data;

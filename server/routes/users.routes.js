@@ -6,6 +6,7 @@ const {
   getMyProfile,
   getMyAssets,
   addNewTransaction,
+  deleteAsset,
 } = require('../controllers/users.controller');
 
 const { protectMiddleware } = require('../middleware/auth.middleware');
@@ -17,5 +18,6 @@ userRouter.post('/login', loginUser);
 userRouter.get('/profile', protectMiddleware, getMyProfile);
 userRouter.get('/assets', protectMiddleware, getMyAssets);
 userRouter.post('/assets', protectMiddleware, addNewTransaction);
+userRouter.delete('/assets', protectMiddleware, deleteAsset);
 
 module.exports = userRouter;
